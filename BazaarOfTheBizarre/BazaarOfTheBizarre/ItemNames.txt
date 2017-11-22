@@ -1,0 +1,25 @@
+https://stackoverflow.com/questions/5796224/c-sharp-sharp-reading-random-line-from-txt-file
+
+Axe of Doom
+Potion of Rejuvination
+Whip of Balrog
+Helmet of Tomas "U+0539 Intelligence"
+Flame Fruit
+Prosperous Shard
+Doom Gauntlet
+Virtue Ring
+Life Hand
+Elixir of Affluence
+Shield of Banishment
+Tablet of Blessings
+Tablet of Betrayal
+Statue of Blessings
+Athanasia Scroll
+Life's Microlith
+Fortitude Runes
+Chaos Monolith
+Hand of Birth
+Shield of Malediction
+Tiara of Ruination
+Microlith of Massacres
+Fountain of Immortality
