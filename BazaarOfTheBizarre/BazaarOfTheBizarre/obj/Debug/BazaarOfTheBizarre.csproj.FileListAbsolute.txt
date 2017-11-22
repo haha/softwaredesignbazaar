@@ -1,0 +1,6 @@
+C:\Users\Håvard\Documents\Skole\Semester 3\Software  Design\BazaarOfTheBizarre\BazaarOfTheBizarre\obj\Debug\BazaarOfTheBizarre.csprojResolveAssemblyReference.cache
+C:\Users\Håvard\Documents\Skole\Semester 3\Software  Design\BazaarOfTheBizarre\BazaarOfTheBizarre\bin\Debug\BazaarOfTheBizarre.exe.config
+C:\Users\Håvard\Documents\Skole\Semester 3\Software  Design\BazaarOfTheBizarre\BazaarOfTheBizarre\bin\Debug\BazaarOfTheBizarre.exe
+C:\Users\Håvard\Documents\Skole\Semester 3\Software  Design\BazaarOfTheBizarre\BazaarOfTheBizarre\bin\Debug\BazaarOfTheBizarre.pdb
+C:\Users\Håvard\Documents\Skole\Semester 3\Software  Design\BazaarOfTheBizarre\BazaarOfTheBizarre\obj\Debug\BazaarOfTheBizarre.exe
+C:\Users\Håvard\Documents\Skole\Semester 3\Software  Design\BazaarOfTheBizarre\BazaarOfTheBizarre\obj\Debug\BazaarOfTheBizarre.pdb
