@@ -5,9 +5,9 @@ namespace BazaarOfTheBizarre
 	/// <summary>
 	/// Description of Class1.
 	/// </summary>
-	public class Class1
+	public class Item
 	{
-		public Class1()
+		public Item()
 		{
 		}
 	}
