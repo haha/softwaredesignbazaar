@@ -11,7 +11,7 @@ namespace BazaarOfTheBizarre
 		{	
 			Store s = new Store("Bazaar of the Bizarre", null);
 			s.newDay();
-			Console.ReadKey(true);
+			//Console.ReadKey(true);
 		}
 	}
 }

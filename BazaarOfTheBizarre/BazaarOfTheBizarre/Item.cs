@@ -13,12 +13,10 @@ namespace BazaarOfTheBizarre
 	public class Item : ItemInterface
 	{
 		public string name {get; private set;}
-		public string description {get; private set;}
 		
-		public Item(string name, string description)
+		public Item(string name)
 		{
 			this.name = name;
-			this.description = description;
 		}
 	}
 }
