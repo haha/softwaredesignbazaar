@@ -1,11 +1,13 @@
 ﻿using System;
+using System.IO;
+using System.Net;
 
 namespace BazaarOfTheBizarre
 {
 	interface StoreInterface
 	{
 		void newDay();
-		Item[] generateItems();
+		Item[] itemFactory();
 		void sellItems(Item i, Customer c);
 		
 	}
@@ -22,13 +24,25 @@ namespace BazaarOfTheBizarre
 		
 		public void newDay()
 		{
+			bool dayOver = false;
+			Item[] items = itemFactory();
+			while(!dayOver) {
+				
+			}
 			//generere items
 			//legge ut for salg
 			//selge
 			// X ??? så det passer i console
 		}
 		
-		private Item[] generateItems();
-		private void sellItems(Item i, Customer c);
+		public Item[] itemFactory() {
+			string path = Directory.GetCurrentDirectory();
+			//string[] allLines = File.ReadAllLines(path);
+			Console.WriteLine("" + path);
+			return null;
+		}
+		public void sellItems(Item i, Customer c) {
+			
+		}
 	}
 }

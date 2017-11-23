@@ -18,6 +18,9 @@ namespace BazaarOfTheBizarre
 			this.name = name;
 		}
 		
-		public bool buyItem(Item i);
+		public bool buyItem(Item i) {
+			string navn = i.name;
+			return true;
+		}
 	}
 }

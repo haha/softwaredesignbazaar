@@ -5,11 +5,6 @@ namespace BazaarOfTheBizarre
 	
 	interface ItemInterface
 	{
-		/*
-		void setName(string s);
-		String getName();
-		void setDescription(string s);
-		String getDescription(); */
 	}
 	
 	/// <summary>
@@ -24,26 +19,6 @@ namespace BazaarOfTheBizarre
 		{
 			this.name = name;
 			this.description = description;
-			//setName(name);
-			//setDescription(description);
 		}
-		/*
-		public void setName(string name)
-		{
-			this.name = name;
-		}
-		public string getName()
-		{
-			return name;
-		}
-		
-		public void setDescription(string description) 
-		{
-			this.description = description;
-		}
-		public string getDescription()
-		{
-			return description;
-		}*/
 	}
 }
