@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace BazaarOfTheBizarre
 {
@@ -9,9 +10,10 @@ namespace BazaarOfTheBizarre
 	{
 		public static void Main(string [] args)
 		{	
-			Store s = new Store("Bazaar of the Bizarre", null);
+			List<Store> stores = new List<Store>();
+			stores.Add(new Store("Bazaar of the Bizarre", null));
+			StoreController s = new StoreController(stores);
 			s.newDay();
-			//Console.ReadKey(true);
 		}
 	}
 }

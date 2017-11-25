@@ -12,8 +12,8 @@ namespace BazaarOfTheBizarre
 		[Test]
 		public void testingItemFactory()
 		{
-			List<Item> i = testBazaar.itemFactory();
-			Assert.AreEqual(testBazaar.itemcount, i.Count);
+			testBazaar.restock();
+			Assert.AreEqual(testBazaar.itemsInStock.Count, testBazaar.itemCount);
 		}
 	}
 }

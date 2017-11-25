@@ -51,9 +51,12 @@
   <ItemGroup>
     <Compile Include="Customer.cs" />
     <Compile Include="Item.cs" />
+    <Compile Include="ItemFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Store.cs" />
+    <Compile Include="StoreController.cs" />
     <Compile Include="StoreTest.cs" />
+    <Compile Include="StoreView.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace BazaarOfTheBizarre
 {
 	interface StoreInterface
 	{
-		void newDay();
-		List<Item> itemFactory();
-		Item checkStoreItems(List<Item> list);
-		
+		Item putItemForSale();
+		void restock();
 	}
 	/// <summary>
 	/// Description of Store..
@@ -17,62 +14,41 @@ namespace BazaarOfTheBizarre
 	public class Store :StoreInterface
 	{
 		public string name {get; private set;}
-		public List<Customer> customers;
-		public int itemcount {get; private set;}
+		public List<Item> itemsInStock {get; private set;}
+		//public int itemCount {get; private set;}
+		public int itemCount = 3;
+		public int itemCountInStock;
+		private ItemFactory factory = new ItemFactory();
 		
 		public Store(string name, List<Customer> customers)
 		{
-			this.customers = new List<Customer>();
 			this.name = name;
-			this.customers = customers;
-			this.itemcount = 3;
+			restock();
+			//this.itemcount = 3;
 		}
 		
-		public void newDay()
+		public Item putItemForSale()
 		{
-			bool dayOver = false;
-			List<Item> items = itemFactory();
-			Item i;
-			while(!dayOver) {
-				if(Console.KeyAvailable)
-				{
-					if(Console.ReadKey(true).Key == ConsoleKey.A)
-					{
-						i = checkStoreItems(items);
-						items = itemFactory();
-					} else if(Console.ReadKey(true).Key == ConsoleKey.B)
-					{
-						dayOver = true;
-					}
-				}
+			Item i = null;
+			
+			if(itemCountInStock > 0)
+			{
+				i = itemsInStock[itemCountInStock-1];
 			}
-			i = checkStoreItems(items);
+			return i;
+			
 		}
 		
-		public List<Item> itemFactory() {
-			List<Item> itemList = new List<Item>();
-			string path = AppDomain.CurrentDomain.BaseDirectory;
-			Random r = new Random();
-			if(path.EndsWith("\\bin\\Debug\\"))
-			{
-				path = path.Replace("\\bin\\Debug", "");
-			}
-			path = path + "ItemNames.txt";
-			string[] allLines = File.ReadAllLines(path);
-			for(int i = 0; i < itemcount; i++) 
-			{
-				itemList.Add(new Item(allLines[r.Next(allLines.Length)]));
-			}
-			return itemList;
+		public void sellItem()
+		{
+			itemsInStock.Remove(itemsInStock[itemCountInStock-1]);
+			itemCountInStock--;
 		}
 		
-		public Item checkStoreItems(List<Item> list) {
-			foreach (Item i in list)
-			{
-				Console.WriteLine(i.name);
-				
-			}
-			return null;
+		public void restock()
+		{
+			itemsInStock = factory.generateItems(itemCount);
+			itemCountInStock = itemCount;
 		}
 	}
 }

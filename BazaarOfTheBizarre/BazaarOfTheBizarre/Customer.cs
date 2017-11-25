@@ -13,6 +13,7 @@ namespace BazaarOfTheBizarre
 	public class Customer : CustomerInterface
 	{
 		public string name {get; private set;}
+		
 		public Customer(string name)
 		{
 			this.name = name;
