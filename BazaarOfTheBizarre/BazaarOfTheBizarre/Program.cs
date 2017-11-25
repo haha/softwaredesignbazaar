@@ -14,6 +14,8 @@ namespace BazaarOfTheBizarre
 			stores.Add(new Store("Bazaar of the Bizarre", null));
 			StoreController s = new StoreController(stores);
 			s.newDay();
+			
+			Console.ReadKey();
 		}
 	}
 }
