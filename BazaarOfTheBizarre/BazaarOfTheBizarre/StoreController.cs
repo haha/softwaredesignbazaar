@@ -12,9 +12,13 @@ namespace BazaarOfTheBizarre
 		private List<Store> stores = new List<Store>();
 		private StoreView view = new StoreView();
 		private List<Customer> customers = new List<Customer>();
-		private Item _currentItem = new Item("");
-		private Store _currentStore = new Store("", null);
+		private Item _currentItem = null;
+		private Store _currentStore = null;
 		private Object _lock = new Object();
+		private Object _lock2 = new Object();
+		
+		int sCount = 0;
+		int cCount = 0;
 		
 		public StoreController(List<Store> stores)
 		{
@@ -26,47 +30,82 @@ namespace BazaarOfTheBizarre
 		
 		public void newDay()
 		{
+			_currentStore = stores[sCount];
+			Thread[] itemThreads = new Thread[stores.Count];
+			Thread[] customerThread = new Thread[customers.Count];
 			foreach(Store s in stores)
 			{
-				Thread[] itemThreads = new Thread[s.itemCount];
-				Thread[] customerThread = new Thread[customers.Count];
-				_currentStore = s;
-				foreach(Item i in _currentStore.itemsInStock)
+				foreach(Item it in s.itemsInStock)
 				{
-					Console.WriteLine(i.name);
+					Console.WriteLine(s.name + " -- " + it.name);
 				}
-				Console.WriteLine("--------------------------");
-				for(int i = 0; i < s.itemCount; i++) {
-					Thread t = new Thread(new ThreadStart(startTransaction));
-					itemThreads[i] = t;
-				}
-				for(int i = 0; i < s.itemCount; i++) {
-					itemThreads[i].Start();
-				}
-				for(int i = 0; i < s.itemCount; i++) {
-					Thread t = new Thread(new ThreadStart(endTransaction));
-					customerThread[i] = t;
-				}
-				for(int i = 0; i < s.itemCount; i++) {
-					customerThread[i].Start();
-				}
-				
+			}
+			Console.WriteLine("-------------------------------------");
+			for(int i = 0; i < stores.Count; i++) {
+				Thread t = new Thread(new ThreadStart(startTransaction));
+				itemThreads[i] = t;
+			}
+			for(int i = 0; i < stores.Count; i++) {
+				itemThreads[i].Start();
+			}
+			
+			for(int i = 0; i < customers.Count; i++) {
+				Thread t = new Thread(new ThreadStart(endTransaction));
+				customerThread[i] = t;
+			}
+			for(int i = 0; i < customers.Count; i++) {
+				customerThread[i].Start();
 			}
 		}
 		
 		public void startTransaction()
 		{
-			_currentItem = _currentStore.putItemForSale();
-			view.announceItemForSale(_currentStore, _currentItem);
+			while(_currentStore.itemCountInStock > 0)
+			{
+				lock(_lock)
+				{
+					if(sCount == stores.Count)
+					{
+						sCount = 0;
+					}
+					_currentStore = stores[sCount];
+					sCount++;
+					
+					if(_currentItem == null && _currentStore.itemCountInStock > 0)
+					{
+						_currentItem = _currentStore.putItemForSale();
+						view.announceItemForSale(_currentStore, _currentItem);
+						Thread.Sleep(1000);
+					}
+				}
+			}
 			
 		}
 		public void endTransaction()
 		{
-			Random r = new Random();
-			Customer c = customers[r.Next(customers.Count-1)];
-			c.buyItem(_currentItem, _currentStore);
-			view.announceSale(c, _currentStore, _currentItem);
-			Console.WriteLine(_currentStore.itemCountInStock);
+			while(_currentStore.itemCountInStock >= 0)
+			{
+				if(cCount == customers.Count)
+				{
+					cCount = 0;
+				}
+				Customer c = customers[cCount];
+				cCount++;
+				lock(_lock)
+				{
+					
+					
+					if(c.buyItem(_currentItem, _currentStore))
+					{
+						view.announceSale(c, _currentStore, _currentItem);
+						_currentItem = null;
+						Thread.Sleep(1000);
+					} else {
+						//Console.WriteLine("Tomt");
+						Thread.Sleep(200);
+					}
+				}
+			}
 			
 		}
 	}

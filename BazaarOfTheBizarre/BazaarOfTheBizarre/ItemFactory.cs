@@ -13,7 +13,7 @@ namespace BazaarOfTheBizarre
 		public List<Item> generateItems(int itemCount) {
 			List<Item> itemList = new List<Item>();
 			string path = AppDomain.CurrentDomain.BaseDirectory;
-			Random r = new Random();
+			Random r = new Random(Guid.NewGuid().GetHashCode()); //seedverdien hentet fra https://stackoverflow.com/questions/1785744/how-do-i-seed-a-random-class-to-avoid-getting-duplicate-random-values
 			if(path.EndsWith("\\bin\\Debug\\"))
 			{
 				path = path.Replace("\\bin\\Debug", "");
@@ -26,7 +26,7 @@ namespace BazaarOfTheBizarre
 				if(iName != "" && !iName.StartsWith("https:")) 
 				{
 					itemList.Add(new Item(iName));
-				} else 
+				} else
 				{
 					i--;
 				}

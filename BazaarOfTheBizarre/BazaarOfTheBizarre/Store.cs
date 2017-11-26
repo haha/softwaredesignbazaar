@@ -29,17 +29,12 @@ namespace BazaarOfTheBizarre
 		
 		public Item putItemForSale()
 		{
-			lock(_lock)
+			Item i = null;
+			if(itemCountInStock > 0)
 			{
-				Item i = null;
-				Random r = new Random();
-				if(itemCountInStock > 0)
-				{
-					i = itemsInStock[r.Next(itemCountInStock-1)];
-				}
-				return i;
+				i = itemsInStock[itemCountInStock-1];
 			}
-			
+			return i;
 		}
 		
 		public void sellItem(Item i)
@@ -52,7 +47,7 @@ namespace BazaarOfTheBizarre
 		{
 			foreach(Item it in itemsInStock)
 			{
-				if(i.Equals(it))
+				if(it.Equals(i))
 				{
 					return true;
 				}

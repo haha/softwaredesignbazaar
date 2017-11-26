@@ -12,8 +12,10 @@ namespace BazaarOfTheBizarre
 		{	
 			List<Store> stores = new List<Store>();
 			stores.Add(new Store("Bazaar of the Bizarre", null));
-			StoreController s = new StoreController(stores);
-			s.newDay();
+			stores.Add(new Store("Super store", null));
+			
+			StoreController sc = new StoreController(stores);
+			sc.newDay();
 			
 			Console.ReadKey();
 		}
