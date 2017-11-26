@@ -2,19 +2,19 @@
 
 namespace BazaarOfTheBizarre
 {
-	/// <summary>
-	/// Description of StoreView.
-	/// </summary>
 	public class StoreView
 	{
-		public void announceItemForSale(Store s, Item i) 
+		
+		//Annonserer ny vare for salg
+		public void announceItemForSale(Store s) 
 		{
-			Console.WriteLine(s.name + " puts " + i.name + " up for sale");
+			Console.WriteLine(s.name + " puts " + s.itemForSale.name + " up for sale");
 		}
 		
-		public void announceSale(Customer c, Store s, Item i)
+		//Annonserer at en vare er solgt
+		public void announceSale(Customer c, Store s)
 		{
-			string sale = c.name + " bought " + s.name + "'s " + i.name;
+			string sale = c.name + " bought " + s.name + "'s " + s.itemForSale.name;
 			Console.CursorLeft = Console.BufferWidth - sale.Length;
 			Console.Write(sale);
 		}

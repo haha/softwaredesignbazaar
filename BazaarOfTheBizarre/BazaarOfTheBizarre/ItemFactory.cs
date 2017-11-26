@@ -4,12 +4,9 @@ using System.IO;
 
 namespace BazaarOfTheBizarre
 {
-	/// <summary>
-	/// Description of ItemFactory: Generates and returns a list of itemCount amount
-	/// of Item objects, with random naming chosen from text-file: ItemNames.txt
-	/// </summary>
 	public class ItemFactory
 	{
+		//Genererer og returnerer en liste over varer med tilfeldige navn - hentet fra en navnefil
 		public List<Item> generateItems(int itemCount) {
 			List<Item> itemList = new List<Item>();
 			string path = AppDomain.CurrentDomain.BaseDirectory;

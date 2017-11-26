@@ -5,60 +5,43 @@ namespace BazaarOfTheBizarre
 {
 	interface StoreInterface
 	{
-		Item putItemForSale();
-		void sellItem(Item i);
-		void restock();
+		void putItemForSale();
+		void restock(int itemCount);
 	}
-	/// <summary>
-	/// Description of Store..
-	/// </summary>
 	public class Store :StoreInterface
 	{
 		public string name {get; private set;}
 		public List<Item> itemsInStock {get; private set;}
-		public int itemCount = 3;
-		public int itemCountInStock;
-		private ItemFactory factory = new ItemFactory();
-		private Object _lock = new Object();
+		public Item itemForSale {get; set;}
 		
-		public Store(string name, List<Customer> customers)
+		public int itemCountInStock;
+		
+		public bool isOpen;
+		ItemFactory _factory = new ItemFactory();
+		
+		public Store(string name, int itemCount)
 		{
 			this.name = name;
-			restock();
+			itemForSale = null;
+			restock(itemCount);
 		}
-		
-		public Item putItemForSale()
+		//Legger vare fram for salg og sjekker om det er tomt
+		public void putItemForSale()
 		{
-			Item i = null;
-			if(itemCountInStock > 0)
-			{
-				i = itemsInStock[itemCountInStock-1];
-			}
-			return i;
-		}
-		
-		public void sellItem(Item i)
-		{
-			itemsInStock.Remove(i);
+			itemForSale = itemsInStock[itemCountInStock-1];
+			itemsInStock.Remove(itemForSale);
 			itemCountInStock--;
-		}
-		
-		public bool findItem(Item i)
-		{
-			foreach(Item it in itemsInStock)
+			if(itemCountInStock == 0)
 			{
-				if(it.Equals(i))
-				{
-					return true;
-				}
+				isOpen = false;
 			}
-			return false;
 		}
-		
-		public void restock()
+		//Fyller opp varelageret
+		public void restock(int itemCount)
 		{
-			itemsInStock = factory.generateItems(itemCount);
+			itemsInStock = _factory.generateItems(itemCount);
 			itemCountInStock = itemCount;
+			isOpen = true;
 		}
 	}
 }

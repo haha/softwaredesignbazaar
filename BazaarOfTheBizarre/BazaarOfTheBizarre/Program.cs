@@ -3,18 +3,21 @@ using System.Collections.Generic;
 
 namespace BazaarOfTheBizarre
 {
-	/// <summary>
-	/// Description of Program.
-	/// </summary>
 	public static class Program
 	{
+		//Main metoden. Navn på varer kan være identiske, men er selv fortsatt unike
 		public static void Main(string [] args)
 		{	
 			List<Store> stores = new List<Store>();
-			stores.Add(new Store("Bazaar of the Bizarre", null));
-			stores.Add(new Store("Super store", null));
+			stores.Add(new Store("Balthazar", 3));
+			stores.Add(new Store("Baba Yoga", 3));
 			
-			StoreController sc = new StoreController(stores);
+			List<Customer> customers = new List<Customer>();
+			customers.Add(new Customer("Fafhrd"));
+			customers.Add(new Customer("Santom"));
+			customers.Add(new Customer("Gray Mouser"));
+			
+			StoreController sc = new StoreController(stores, customers);
 			sc.newDay();
 			
 			Console.ReadKey();

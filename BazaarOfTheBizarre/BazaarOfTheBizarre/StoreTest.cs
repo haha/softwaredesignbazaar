@@ -1,19 +1,19 @@
 ﻿using System;
 using NUnit.Framework;
-using System.Collections.Generic;
 
 namespace BazaarOfTheBizarre
 {
 	[TestFixture]
 	public class StoreTest
 	{
-		Store testBazaar = new Store("test", null);
+		Store testBazaar = new Store("test", 3);
 		
+		//tester generering av varer
 		[Test]
 		public void testingItemFactory()
 		{
-			testBazaar.restock();
-			Assert.AreEqual(testBazaar.itemsInStock.Count, testBazaar.itemCount);
+			testBazaar.restock(3);
+			Assert.AreEqual(testBazaar.itemsInStock.Count, testBazaar.itemCountInStock);
 		}
 	}
 }

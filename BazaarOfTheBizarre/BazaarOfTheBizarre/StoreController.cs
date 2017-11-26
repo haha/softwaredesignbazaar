@@ -4,36 +4,34 @@ using System.Collections.Generic;
 
 namespace BazaarOfTheBizarre
 {
-	/// <summary>
-	/// Description of StoreController.
-	/// </summary>
 	public class StoreController
 	{
-		private List<Store> stores = new List<Store>();
-		private StoreView view = new StoreView();
-		private List<Customer> customers = new List<Customer>();
-		private Item _currentItem = null;
-		private Store _currentStore = null;
-		private Object _lock = new Object();
-		private Object _lock2 = new Object();
+		
+		List<Store> _stores = new List<Store>();
+		List<Customer> _customers = new List<Customer>();	
+		
+		Store _currentStore;
+		Customer _currentCustomer;
+		
+		Object _lock = new Object();
+		StoreView _view = new StoreView();
 		
 		int sCount = 0;
 		int cCount = 0;
 		
-		public StoreController(List<Store> stores)
+		public StoreController(List<Store> stores, List<Customer> customers)
 		{
-			this.stores = stores;
-			customers.Add(new Customer("Per"));
-			customers.Add(new Customer("Paul"));
-			customers.Add(new Customer("Espen"));
+			_stores = stores;
+			_customers = customers;
 		}
 		
+		//selve utførelsesmetoden. lager tråde og starter disse. kalt newDay for å gjenspeile en ny dag på markedet
 		public void newDay()
 		{
-			_currentStore = stores[sCount];
-			Thread[] itemThreads = new Thread[stores.Count];
-			Thread[] customerThread = new Thread[customers.Count];
-			foreach(Store s in stores)
+			Thread[] itemThreads = new Thread[_stores.Count];
+			Thread[] customerThread = new Thread[_customers.Count];
+			
+			foreach(Store s in _stores)
 			{
 				foreach(Item it in s.itemsInStock)
 				{
@@ -41,117 +39,97 @@ namespace BazaarOfTheBizarre
 				}
 			}
 			Console.WriteLine("-------------------------------------");
-			for(int i = 0; i < stores.Count; i++) {
+			
+			for(int i = 0; i < _stores.Count; i++) {
 				Thread t = new Thread(new ThreadStart(startTransaction));
+				t.Name = "store"+i;
 				itemThreads[i] = t;
 			}
-			for(int i = 0; i < stores.Count; i++) {
+			for(int i = 0; i < _stores.Count; i++) {
 				itemThreads[i].Start();
 			}
 			
-			for(int i = 0; i < customers.Count; i++) {
+			for(int i = 0; i < _customers.Count; i++) {
 				Thread t = new Thread(new ThreadStart(endTransaction));
+				t.Name = "customer"+i;
 				customerThread[i] = t;
 			}
-			for(int i = 0; i < customers.Count; i++) {
+			for(int i = 0; i < _customers.Count; i++) {
 				customerThread[i].Start();
 			}
 		}
 		
+		//Metode for å legge ut vare for salg
 		public void startTransaction()
 		{
-			while(_currentStore.itemCountInStock > 0)
+			while(checkIfOpen())
 			{
 				lock(_lock)
 				{
-					if(sCount == stores.Count)
+					nextStore();
+					if(_currentStore.itemForSale == null && _currentStore.isOpen)
 					{
-						sCount = 0;
-					}
-					_currentStore = stores[sCount];
-					sCount++;
-					
-					if(_currentItem == null && _currentStore.itemCountInStock > 0)
-					{
-						_currentItem = _currentStore.putItemForSale();
-						view.announceItemForSale(_currentStore, _currentItem);
+						_currentStore.putItemForSale();
+						_view.announceItemForSale(_currentStore);
 						Thread.Sleep(1000);
 					}
 				}
 			}
-			
 		}
+		
+		//Metode for å utføre kjøp og salg
 		public void endTransaction()
 		{
-			while(_currentStore.itemCountInStock >= 0)
+			while(checkIfOpen())
 			{
-				if(cCount == customers.Count)
+				if(_currentStore != null)
 				{
-					cCount = 0;
-				}
-				Customer c = customers[cCount];
-				cCount++;
-				lock(_lock)
-				{
-					
-					
-					if(c.buyItem(_currentItem, _currentStore))
+					lock(_lock)
 					{
-						view.announceSale(c, _currentStore, _currentItem);
-						_currentItem = null;
-						Thread.Sleep(1000);
-					} else {
-						//Console.WriteLine("Tomt");
-						Thread.Sleep(200);
+						nextCustomer();
+						if(_currentCustomer.buyItem(_currentStore))
+						{
+							_view.announceSale(_currentCustomer, _currentStore);
+							_currentStore.itemForSale = null;
+							Thread.Sleep(2000);
+						} else {
+							nextStore();
+						}
 					}
 				}
 			}
-			
 		}
+		
+		//Hjelpemetode for å sjekke om det er tomt for items
+		bool checkIfOpen() {
+			foreach(Store s in _stores)
+			{
+				if(s.isOpen) return true;
+			}
+			return false;
+		}
+		
+		//Hjelpemetode for å skifte mellom de som handler
+		void nextCustomer()
+		{
+			if(cCount == _customers.Count)
+			{
+				cCount = 0;
+			}
+			_currentCustomer = _customers[cCount];
+			cCount++;
+		}
+		
+		//Hjelpemetode for å skifte mellom butikkene
+		void nextStore()
+		{
+			if(sCount == _stores.Count)
+			{
+				sCount = 0;
+			}
+			_currentStore = _stores[sCount];
+			sCount++;
+		}
+		
 	}
 }
-
-//				bool dayOver = false;
-//				do {
-//
-//	if(s.itemCountInStock <= 0)
-//					{
-//						Console.WriteLine("\nPress A for new day of bazaaring or B to exit\n"); //LEGG I VIEW
-//						if(Console.ReadKey(true).Key == ConsoleKey.A)
-////						{
-////							s.restock();
-////						} else if(Console.ReadKey(true).Key == ConsoleKey.B)
-////						{
-////							dayOver = true;
-////						}
-//					} else {
-//
-////						Thread[] threads = new Thread[s.itemCount];
-////						for(int j = 0; j < s.itemCount; j++)
-////						{
-////							Thread t = new Thread(new ThreadStart());
-////							threads[j] = t;
-////						}
-////
-////						for(int j = 0; j < s.itemCount; j++) {
-////							threads[j].Start();
-////						}
-//
-//
-//						Item i = s.putItemForSale();
-//						view.announceItemForSale(s, i);
-//
-//
-//
-//						foreach(Customer c in customers) {
-////							Thread t = new Thread(new ParameterizedThreadStart(c.buyItem));
-////							t.Start();
-//							if(c.buyItem(i, s))
-//							{
-//								view.announceSale(c, s, i);
-//							}
-//						}
-//
-//
-//					}
-//				} while (!dayOver);
